@@ -1,10 +1,10 @@
 language: php
 
 php:
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
+  - 7.1
+  - 7.2
+  - 7.3
+  - 7.4
 
 before_script:
   - travis_retry composer self-update
@@ -15,6 +15,6 @@ script:
   # - ./vendor/bin/phpcs --standard=psr2 src/
   - ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
 
-after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+#after_script:
+#  - wget https://scrutinizer-ci.com/ocular.phar
+#  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
