@@ -1,7 +1,7 @@
 <?php
-namespace Kristenlk\OAuth2\Client\Test\Provider;
+namespace NecLimDul\OAuth2\Client\Test\Provider;
 
-use Kristenlk\OAuth2\Client\Provider\Marketo;
+use NecLimDul\OAuth2\Client\Provider\Marketo;
 use Mockery as m;
 use ReflectionClass;
 
@@ -12,7 +12,7 @@ class MarketoTest extends \PHPUnit_Framework_TestCase
 
     protected static function getMethod($name)
     {
-        $class = new ReflectionClass('Kristenlk\OAuth2\Client\Provider\Marketo');
+        $class = new ReflectionClass('NecLimDul\OAuth2\Client\Provider\Marketo');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
         return $method;

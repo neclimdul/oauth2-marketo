@@ -1,6 +1,6 @@
 <?php
 
-namespace Kristenlk\OAuth2\Client\Provider;
+namespace NecLimDul\OAuth2\Client\Provider;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Grant\AbstractGrant;
@@ -30,7 +30,7 @@ class Marketo extends AbstractProvider
 
     protected function createAccessToken(array $response, AbstractGrant $grant)
     {
-        return new \Kristenlk\OAuth2\Client\Token\AccessToken($response);
+        return new \NecLimDul\OAuth2\Client\Token\AccessToken($response);
     }
 
     /**

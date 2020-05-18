@@ -2,7 +2,7 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via pull requests on [Github](https://github.com/kristenlk/oauth2-marketo).
+We accept contributions via pull requests on [Github](https://github.com/neclimdul/oauth2-marketo).
 
 
 ## Pull Requests
