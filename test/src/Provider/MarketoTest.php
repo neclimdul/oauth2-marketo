@@ -6,14 +6,11 @@ use GuzzleHttp\ClientInterface;
 use NecLimDul\OAuth2\Client\Provider\Marketo;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ResponseInterface;
 
 
 class MarketoTest extends TestCase
 {
-    use ProphecyTrait;
-
     protected $provider;
 
     protected function setUp(): void
