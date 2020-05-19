@@ -12,34 +12,34 @@ class Marketo extends AbstractProvider
 {
     protected $baseUrl;
 
+    /**
+     * The base marketo API url.
+     *
+     * @return string
+     */
     public function getBaseUrl()
     {
         return $this->baseUrl;
     }
 
     /**
-     * Returns the base URL for requesting an access token.
-     *
-     * @param array $params
-     * @return string
+     * {@inheritDoc}
      */
     public function getBaseAccessTokenUrl(array $params)
     {
         return $this->getBaseUrl() . '/identity/oauth/token';
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function createAccessToken(array $response, AbstractGrant $grant)
     {
         return new \NecLimDul\OAuth2\Client\Token\AccessToken($response);
     }
 
     /**
-     * Check a provider response for errors.
-     *
-     * @param ResponseInterface $response
-     * @param array|string $data
-     *
-     * @throws IdentityProviderException
+     * {@inheritDoc}
      */
     protected function checkResponse(ResponseInterface $response, $data)
     {
