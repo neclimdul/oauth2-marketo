@@ -9,9 +9,14 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
 
-
+/**
+ * @coversDefaultClass \NecLimDul\OAuth2\Client\Provider\Marketo
+ */
 class MarketoTest extends TestCase
 {
+    /**
+     * @var \NecLimDul\OAuth2\Client\Provider\Marketo
+     */
     protected $provider;
 
     /**
@@ -32,6 +37,9 @@ class MarketoTest extends TestCase
         $this->provider->setHttpClient($this->client->reveal());
     }
 
+    /**
+     * @covers ::getBaseAccessTokenUrl
+     */
     public function testGetBaseAccessTokenUrl()
     {
         $params = [];
@@ -40,6 +48,9 @@ class MarketoTest extends TestCase
         $this->assertEquals('/identity/oauth/token', $uri['path']);
     }
 
+    /**
+     * @covers ::getAccessToken
+     */
     public function testGetAccessToken()
     {
         $response = new Response(
@@ -57,6 +68,9 @@ class MarketoTest extends TestCase
         $this->assertNull($token->getRefreshToken());
     }
 
+    /**
+     * @covers ::checkResponse
+     */
     public function testCheckResponseThrowsIdentityProviderException()
     {
         $method = new class extends Marketo {
