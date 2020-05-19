@@ -84,5 +84,4 @@ class Marketo extends AbstractProvider
     {
         throw new \Exception('Not Implemented', 501);
     }
-
 }
