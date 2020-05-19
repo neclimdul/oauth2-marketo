@@ -3,6 +3,7 @@
 namespace NecLimDul\OAuth2\Client\Test\Provider;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Response;
 use NecLimDul\OAuth2\Client\Provider\Marketo;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -13,6 +14,11 @@ class MarketoTest extends TestCase
 {
     protected $provider;
 
+    /**
+     * @var \GuzzleHttp\ClientInterface|\Prophecy\Prophecy\ObjectProphecy
+     */
+    protected $client;
+
     protected function setUp(): void
     {
         $this->provider = new Marketo(
@@ -22,6 +28,8 @@ class MarketoTest extends TestCase
                 'baseUrl' => 'https://abc-123-456.example.com',
             ]
         );
+        $this->client = $this->prophesize(ClientInterface::class);
+        $this->provider->setHttpClient($this->client->reveal());
     }
 
     public function testGetBaseAccessTokenUrl()
@@ -34,21 +42,13 @@ class MarketoTest extends TestCase
 
     public function testGetAccessToken()
     {
-        $response = $this->prophesize(ResponseInterface::class);
-        $response->getBody()
-            ->willReturn(
-                '{"access_token": "mock_access_token", "expires_in": 3600}'
-            );
-        $response->getHeader('content-type')
-            ->willReturn(['content-type' => 'json']);
-        $response->getStatusCode()
-            ->willReturn(200);
-
-        $client = $this->prophesize(ClientInterface::class);
-        $client->send(Argument::any())
-            ->willReturn($response->reveal());
-
-        $this->provider->setHttpClient($client->reveal());
+        $response = new Response(
+            200,
+            ['content-type' => 'json'],
+            '{"access_token": "mock_access_token", "expires_in": 3600}'
+        );
+        $this->client->send(Argument::any())
+            ->willReturn($response);
 
         $token = $this->provider->getAccessToken('client_credentials');
         $this->assertEquals('mock_access_token', $token->getToken());
@@ -66,13 +66,11 @@ class MarketoTest extends TestCase
             }
         };
 
-        $response = $this->prophesize(ResponseInterface::class);
-        $response->getBody()
-            ->willReturn(
-                '{"error": "unauthorized", "error_description": "No client with requested id: abc123"}'
-            );
-        $response->getStatusCode()
-            ->willReturn(401);
+        $response = new Response(
+            401,
+            ['content-type' => 'json'],
+            '{"error": "unauthorized", "error_description": "No client with requested id: abc123"}'
+        );
 
         $data = [
             'error' => 'unauthorized',
@@ -81,7 +79,7 @@ class MarketoTest extends TestCase
 
         $this->expectExceptionCode(401);
         $this->expectExceptionMessage('unauthorized');
-        $method->checkResponse($response->reveal(), $data);
+        $method->checkResponse($response, $data);
     }
 
 }
