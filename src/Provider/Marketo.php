@@ -6,6 +6,7 @@ use League\OAuth2\Client\Grant\AbstractGrant;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Token\AccessToken;
+use NecLimDul\OAuth2\Client\Token\AccessToken as MarketoAccessToken;
 use Psr\Http\Message\ResponseInterface;
 
 class Marketo extends AbstractProvider
@@ -35,7 +36,7 @@ class Marketo extends AbstractProvider
      */
     protected function createAccessToken(array $response, AbstractGrant $grant)
     {
-        return new \NecLimDul\OAuth2\Client\Token\AccessToken($response);
+        return new MarketoAccessToken($response);
     }
 
     /**
