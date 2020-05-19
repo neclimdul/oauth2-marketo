@@ -4,8 +4,9 @@ namespace NecLimDul\OAuth2\Client\Test\Provider;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use League\OAuth2\Client\Token\AccessToken;
 use NecLimDul\OAuth2\Client\Provider\Marketo;
-use NecLimDul\OAuth2\Client\Token\AccessToken;
+use NecLimDul\OAuth2\Client\Token\AccessToken as MarketoAccessToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
@@ -64,7 +65,7 @@ class MarketoTest extends TestCase
             ->willReturn($response);
 
         $token = $this->provider->getAccessToken('client_credentials');
-        $this->assertInstanceOf(AccessToken::class, $token);
+        $this->assertInstanceOf(MarketoAccessToken::class, $token);
         $this->assertEquals('mock_access_token', $token->getToken());
         $this->assertLessThanOrEqual(time() + 3600, $token->getExpires());
         $this->assertGreaterThanOrEqual(time(), $token->getExpires());
@@ -118,6 +119,60 @@ class MarketoTest extends TestCase
         $this->expectExceptionCode(401);
         $this->expectExceptionMessage('unauthorized');
         $provider->checkResponse($response, $data);
+    }
+
+    /**
+     * @covers ::getBaseAuthorizationUrl
+     */
+    public function testGetBaseAuthorizationUrl()
+    {
+        $this->expectExceptionCode(501);
+        $this->expectExceptionMessage('Not Implemented');
+        $this->provider->getBaseAuthorizationUrl();
+    }
+
+    /**
+     * @covers ::getResourceOwnerDetailsUrl
+     */
+    public function testGetResourceOwnerDetailsUrl()
+    {
+        $this->expectExceptionCode(501);
+        $this->expectExceptionMessage('Not Implemented');
+        $this->provider->getResourceOwnerDetailsUrl(new MarketoAccessToken(['access_token' => 123]));
+    }
+
+    /**
+     * @covers ::getDefaultScopes
+     */
+    public function testGetDefaultScopes()
+    {
+        $provider = new class extends Marketo {
+            public function getDefaultScopes()
+            {
+                parent::getDefaultScopes();
+            }
+        };
+
+        $this->expectExceptionCode(501);
+        $this->expectExceptionMessage('Not Implemented');
+        $provider->getDefaultScopes();
+    }
+
+    /**
+     * @covers ::createResourceOwner
+     */
+    public function testCreateResourceOwner()
+    {
+        $provider = new class extends Marketo {
+            public function createResourceOwner(array $response, AccessToken $token)
+            {
+                parent::createResourceOwner($response, $token);
+            }
+        };
+
+        $this->expectExceptionCode(501);
+        $this->expectExceptionMessage('Not Implemented');
+        $provider->createResourceOwner([], new MarketoAccessToken(['access_token' => 123]));
     }
 
 }

@@ -53,20 +53,36 @@ class Marketo extends AbstractProvider
         }
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     public function getBaseAuthorizationUrl()
     {
+        throw new \Exception('Not Implemented', 501);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function getResourceOwnerDetailsUrl(AccessToken $token)
     {
+        throw new \Exception('Not Implemented', 501);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getDefaultScopes()
     {
+        throw new \Exception('Not Implemented', 501);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function createResourceOwner(array $response, AccessToken $token)
     {
+        throw new \Exception('Not Implemented', 501);
     }
+
 }
