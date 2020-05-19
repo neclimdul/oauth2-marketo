@@ -75,8 +75,8 @@ class MarketoTest extends TestCase
             ->willReturn(401);
 
         $data = [
-            'error' => "unauthorized",
-            "error_description" => "No client with requested id: abc123"
+            'error' => 'unauthorized',
+            'error_description' => 'No client with requested id: abc123'
         ];
 
         $this->expectExceptionCode(401);
