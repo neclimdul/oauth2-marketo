@@ -5,6 +5,7 @@ namespace NecLimDul\OAuth2\Client\Test\Provider;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 use NecLimDul\OAuth2\Client\Provider\Marketo;
+use NecLimDul\OAuth2\Client\Token\AccessToken;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Http\Message\ResponseInterface;
@@ -39,17 +40,18 @@ class MarketoTest extends TestCase
 
     /**
      * @covers ::getBaseAccessTokenUrl
+     * @covers ::getBaseUrl
      */
     public function testGetBaseAccessTokenUrl()
     {
-        $params = [];
-        $url = $this->provider->getBaseAccessTokenUrl($params);
-        $uri = parse_url($url);
-        $this->assertEquals('/identity/oauth/token', $uri['path']);
+        $this->assertEquals(
+            'https://abc-123-456.example.com/identity/oauth/token',
+            $this->provider->getBaseAccessTokenUrl([])
+        );
     }
 
     /**
-     * @covers ::getAccessToken
+     * @covers ::createAccessToken
      */
     public function testGetAccessToken()
     {
@@ -62,6 +64,7 @@ class MarketoTest extends TestCase
             ->willReturn($response);
 
         $token = $this->provider->getAccessToken('client_credentials');
+        $this->assertInstanceOf(AccessToken::class, $token);
         $this->assertEquals('mock_access_token', $token->getToken());
         $this->assertLessThanOrEqual(time() + 3600, $token->getExpires());
         $this->assertGreaterThanOrEqual(time(), $token->getExpires());
@@ -71,9 +74,30 @@ class MarketoTest extends TestCase
     /**
      * @covers ::checkResponse
      */
+    public function testCheckResponse()
+    {
+        $provider = new class extends Marketo {
+            public function checkResponse(ResponseInterface $response, $data)
+            {
+                parent::checkResponse($response, $data);
+            }
+        };
+
+        $response = new Response(
+            200,
+            ['content-type' => 'json'],
+            '{"access_token": "mock_access_token", "expires_in": 3600}'
+        );
+
+        $this->assertNull($provider->checkResponse($response, []));
+    }
+
+    /**
+     * @covers ::checkResponse
+     */
     public function testCheckResponseThrowsIdentityProviderException()
     {
-        $method = new class extends Marketo {
+        $provider = new class extends Marketo {
             public function checkResponse(ResponseInterface $response, $data)
             {
                 parent::checkResponse($response, $data);
@@ -93,7 +117,7 @@ class MarketoTest extends TestCase
 
         $this->expectExceptionCode(401);
         $this->expectExceptionMessage('unauthorized');
-        $method->checkResponse($response, $data);
+        $provider->checkResponse($response, $data);
     }
 
 }
