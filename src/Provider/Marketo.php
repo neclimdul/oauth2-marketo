@@ -46,7 +46,7 @@ class Marketo extends AbstractProvider
     {
         if ($response->getStatusCode() >= 400) {
             throw new IdentityProviderException(
-                $data['error'] ?: $response->getReasonPhrase(),
+                isset($data['error']) ? $data['error'] : $response->getReasonPhrase(),
                 $response->getStatusCode(),
                 $response
             );
