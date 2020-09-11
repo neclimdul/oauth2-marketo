@@ -28,7 +28,7 @@ class Marketo extends AbstractProvider
      */
     public function getBaseAccessTokenUrl(array $params)
     {
-        return $this->getBaseUrl() . '/identity/oauth/token';
+        return $this->getBaseUrl() . '/identity/oauth/token?' . http_build_query($params);
     }
 
     /**
