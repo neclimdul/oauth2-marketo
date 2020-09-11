@@ -58,7 +58,7 @@ class Marketo extends AbstractProvider
      */
     public function getBaseAuthorizationUrl()
     {
-        throw new \Exception('Not Implemented', 501);
+        return '';
     }
 
     /**
@@ -74,7 +74,7 @@ class Marketo extends AbstractProvider
      */
     protected function getDefaultScopes()
     {
-        throw new \Exception('Not Implemented', 501);
+        return NULL;
     }
 
     /**
